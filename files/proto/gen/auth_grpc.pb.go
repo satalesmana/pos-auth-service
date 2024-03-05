@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,9 +20,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthService_Register_FullMethodName = "/auth.AuthService/Register"
-	AuthService_Login_FullMethodName    = "/auth.AuthService/Login"
-	AuthService_Validate_FullMethodName = "/auth.AuthService/Validate"
+	AuthService_Register_FullMethodName           = "/auth.AuthService/Register"
+	AuthService_Login_FullMethodName              = "/auth.AuthService/Login"
+	AuthService_Validate_FullMethodName           = "/auth.AuthService/Validate"
+	AuthService_SetUserPermissions_FullMethodName = "/auth.AuthService/SetUserPermissions"
+	AuthService_GetActivities_FullMethodName      = "/auth.AuthService/GetActivities"
+	AuthService_GetUsrActivities_FullMethodName   = "/auth.AuthService/GetUsrActivities"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -31,6 +35,9 @@ type AuthServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error)
+	SetUserPermissions(ctx context.Context, in *SetUserPermissionsRequest, opts ...grpc.CallOption) (*SetUserPermissionsResponse, error)
+	GetActivities(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActivitiesResponse, error)
+	GetUsrActivities(ctx context.Context, in *GetUsrActivitiesRequest, opts ...grpc.CallOption) (*ActivitiesResponse, error)
 }
 
 type authServiceClient struct {
@@ -68,6 +75,33 @@ func (c *authServiceClient) Validate(ctx context.Context, in *ValidateRequest, o
 	return out, nil
 }
 
+func (c *authServiceClient) SetUserPermissions(ctx context.Context, in *SetUserPermissionsRequest, opts ...grpc.CallOption) (*SetUserPermissionsResponse, error) {
+	out := new(SetUserPermissionsResponse)
+	err := c.cc.Invoke(ctx, AuthService_SetUserPermissions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetActivities(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActivitiesResponse, error) {
+	out := new(ActivitiesResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetActivities_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetUsrActivities(ctx context.Context, in *GetUsrActivitiesRequest, opts ...grpc.CallOption) (*ActivitiesResponse, error) {
+	out := new(ActivitiesResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetUsrActivities_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations should embed UnimplementedAuthServiceServer
 // for forward compatibility
@@ -75,6 +109,9 @@ type AuthServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Validate(context.Context, *ValidateRequest) (*ValidateResponse, error)
+	SetUserPermissions(context.Context, *SetUserPermissionsRequest) (*SetUserPermissionsResponse, error)
+	GetActivities(context.Context, *emptypb.Empty) (*ActivitiesResponse, error)
+	GetUsrActivities(context.Context, *GetUsrActivitiesRequest) (*ActivitiesResponse, error)
 }
 
 // UnimplementedAuthServiceServer should be embedded to have forward compatible implementations.
@@ -89,6 +126,15 @@ func (UnimplementedAuthServiceServer) Login(context.Context, *LoginRequest) (*Lo
 }
 func (UnimplementedAuthServiceServer) Validate(context.Context, *ValidateRequest) (*ValidateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Validate not implemented")
+}
+func (UnimplementedAuthServiceServer) SetUserPermissions(context.Context, *SetUserPermissionsRequest) (*SetUserPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetUserPermissions not implemented")
+}
+func (UnimplementedAuthServiceServer) GetActivities(context.Context, *emptypb.Empty) (*ActivitiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivities not implemented")
+}
+func (UnimplementedAuthServiceServer) GetUsrActivities(context.Context, *GetUsrActivitiesRequest) (*ActivitiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsrActivities not implemented")
 }
 
 // UnsafeAuthServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -156,6 +202,60 @@ func _AuthService_Validate_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_SetUserPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetUserPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).SetUserPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_SetUserPermissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).SetUserPermissions(ctx, req.(*SetUserPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetActivities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetActivities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetActivities(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetUsrActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsrActivitiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetUsrActivities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetUsrActivities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetUsrActivities(ctx, req.(*GetUsrActivitiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -174,6 +274,18 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Validate",
 			Handler:    _AuthService_Validate_Handler,
+		},
+		{
+			MethodName: "SetUserPermissions",
+			Handler:    _AuthService_SetUserPermissions_Handler,
+		},
+		{
+			MethodName: "GetActivities",
+			Handler:    _AuthService_GetActivities_Handler,
+		},
+		{
+			MethodName: "GetUsrActivities",
+			Handler:    _AuthService_GetUsrActivities_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

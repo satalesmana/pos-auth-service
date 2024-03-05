@@ -7,6 +7,7 @@ import (
 	"go-grpc-auth-svc/helpers/jwt"
 	uc "go-grpc-auth-svc/pkg/usecase/auth-usecase"
 
+	"google.golang.org/protobuf/types/known/emptypb"
 	"gorm.io/gorm"
 )
 
@@ -36,4 +37,16 @@ func (s *Server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.Val
 	result := usersUc.Validate(context.Background(), req, s.Jwt)
 
 	return result, nil
+}
+
+func (s *Server) SetUserPermissions(ctx context.Context, req *pb.SetUserPermissionsRequest) (*pb.SetUserPermissionsResponse, error) {
+	return nil, nil
+}
+
+func (s *Server) GetActivities(ctx context.Context, req *emptypb.Empty) (*pb.ActivitiesResponse, error) {
+	return nil, nil
+}
+
+func (s *Server) GetUsrActivities(ctx context.Context, req *pb.GetUsrActivitiesRequest) (*pb.ActivitiesResponse, error) {
+	return nil, nil
 }
