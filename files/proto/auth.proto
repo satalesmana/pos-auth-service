@@ -12,11 +12,11 @@ service AuthService {
 
   rpc SetUserPermissions(SetUserPermissionsRequest) returns (SetUserPermissionsResponse){}
   rpc GetActivities(google.protobuf.Empty) returns (ActivitiesResponse) {}
-  rpc GetUsrActivities(GetUsrActivitiesRequest) returns (ActivitiesResponse) {}
+  rpc GetUserActivities(GetUserActivitiesRequest) returns (ActivitiesResponse) {}
 }
 
-//GetUsrActivities
-message GetUsrActivitiesRequest {
+//GetUserActivities
+message GetUserActivitiesRequest {
   string usersId = 1;
 }
 

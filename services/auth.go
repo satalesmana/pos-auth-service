@@ -47,6 +47,6 @@ func (s *Server) GetActivities(ctx context.Context, req *emptypb.Empty) (*pb.Act
 	return nil, nil
 }
 
-func (s *Server) GetUsrActivities(ctx context.Context, req *pb.GetUsrActivitiesRequest) (*pb.ActivitiesResponse, error) {
+func (s *Server) GetUserActivities(ctx context.Context, req *pb.GetUserActivitiesRequest) (*pb.ActivitiesResponse, error) {
 	return nil, nil
 }
