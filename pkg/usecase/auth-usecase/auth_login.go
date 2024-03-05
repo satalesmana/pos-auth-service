@@ -7,31 +7,26 @@ import (
 	"go-grpc-auth-svc/helpers/jwt"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
-func (uc *Uscase) Login(ctx context.Context, request *pb.LoginRequest, jwt jwt.JwtWrapper) *pb.LoginResponse {
+func (uc *Uscase) Login(ctx context.Context, request *pb.LoginRequest, jwt jwt.JwtWrapper) (*pb.LoginResponse, error) {
 
 	user, _ := uc.userRepo.GetByEmail(ctx, request.Email)
 	if user.Email == "" {
-		return &pb.LoginResponse{
-			Status: int64(codes.NotFound),
-			Error:  "invalid username or password",
-		}
+		err := status.Error(codes.NotFound, "Invalid username or password")
+		return nil, err
 	}
 
 	match := hash.CheckPasswordHash(request.Password, user.Password)
 	if !match {
-		return &pb.LoginResponse{
-			Status: int64(codes.NotFound),
-			Error:  "password doesn't match",
-		}
+		err := status.Error(codes.NotFound, "Password doesn't match")
+		return nil, err
 	}
 
 	token, _ := jwt.GenerateToken(user)
 
 	return &pb.LoginResponse{
-		Status: int64(codes.OK),
-		Error:  "",
-		Token:  token,
-	}
+		Token: token,
+	}, nil
 }

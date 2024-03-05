@@ -23,9 +23,11 @@ const (
 	AuthService_Register_FullMethodName           = "/auth.AuthService/Register"
 	AuthService_Login_FullMethodName              = "/auth.AuthService/Login"
 	AuthService_Validate_FullMethodName           = "/auth.AuthService/Validate"
-	AuthService_SetUserPermissions_FullMethodName = "/auth.AuthService/SetUserPermissions"
+	AuthService_CreateActivities_FullMethodName   = "/auth.AuthService/CreateActivities"
+	AuthService_DeleteActivities_FullMethodName   = "/auth.AuthService/DeleteActivities"
 	AuthService_GetActivities_FullMethodName      = "/auth.AuthService/GetActivities"
-	AuthService_GetUserActivities_FullMethodName  = "/auth.AuthService/GetUserActivities"
+	AuthService_SetUserPermissions_FullMethodName = "/auth.AuthService/SetUserPermissions"
+	AuthService_GetUserPermissions_FullMethodName = "/auth.AuthService/GetUserPermissions"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -35,9 +37,11 @@ type AuthServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error)
-	SetUserPermissions(ctx context.Context, in *SetUserPermissionsRequest, opts ...grpc.CallOption) (*SetUserPermissionsResponse, error)
+	CreateActivities(ctx context.Context, in *CreateActivitiesRequest, opts ...grpc.CallOption) (*GlobalResponse, error)
+	DeleteActivities(ctx context.Context, in *DeleteActivitiesRequest, opts ...grpc.CallOption) (*GlobalResponse, error)
 	GetActivities(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ActivitiesResponse, error)
-	GetUserActivities(ctx context.Context, in *GetUserActivitiesRequest, opts ...grpc.CallOption) (*ActivitiesResponse, error)
+	SetUserPermissions(ctx context.Context, in *SetUserPermissionsRequest, opts ...grpc.CallOption) (*SetUserPermissionsResponse, error)
+	GetUserPermissions(ctx context.Context, in *GetUserActivitiesRequest, opts ...grpc.CallOption) (*ActivitiesResponse, error)
 }
 
 type authServiceClient struct {
@@ -75,9 +79,18 @@ func (c *authServiceClient) Validate(ctx context.Context, in *ValidateRequest, o
 	return out, nil
 }
 
-func (c *authServiceClient) SetUserPermissions(ctx context.Context, in *SetUserPermissionsRequest, opts ...grpc.CallOption) (*SetUserPermissionsResponse, error) {
-	out := new(SetUserPermissionsResponse)
-	err := c.cc.Invoke(ctx, AuthService_SetUserPermissions_FullMethodName, in, out, opts...)
+func (c *authServiceClient) CreateActivities(ctx context.Context, in *CreateActivitiesRequest, opts ...grpc.CallOption) (*GlobalResponse, error) {
+	out := new(GlobalResponse)
+	err := c.cc.Invoke(ctx, AuthService_CreateActivities_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) DeleteActivities(ctx context.Context, in *DeleteActivitiesRequest, opts ...grpc.CallOption) (*GlobalResponse, error) {
+	out := new(GlobalResponse)
+	err := c.cc.Invoke(ctx, AuthService_DeleteActivities_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -93,9 +106,18 @@ func (c *authServiceClient) GetActivities(ctx context.Context, in *emptypb.Empty
 	return out, nil
 }
 
-func (c *authServiceClient) GetUserActivities(ctx context.Context, in *GetUserActivitiesRequest, opts ...grpc.CallOption) (*ActivitiesResponse, error) {
+func (c *authServiceClient) SetUserPermissions(ctx context.Context, in *SetUserPermissionsRequest, opts ...grpc.CallOption) (*SetUserPermissionsResponse, error) {
+	out := new(SetUserPermissionsResponse)
+	err := c.cc.Invoke(ctx, AuthService_SetUserPermissions_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetUserPermissions(ctx context.Context, in *GetUserActivitiesRequest, opts ...grpc.CallOption) (*ActivitiesResponse, error) {
 	out := new(ActivitiesResponse)
-	err := c.cc.Invoke(ctx, AuthService_GetUserActivities_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, AuthService_GetUserPermissions_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -109,9 +131,11 @@ type AuthServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Validate(context.Context, *ValidateRequest) (*ValidateResponse, error)
-	SetUserPermissions(context.Context, *SetUserPermissionsRequest) (*SetUserPermissionsResponse, error)
+	CreateActivities(context.Context, *CreateActivitiesRequest) (*GlobalResponse, error)
+	DeleteActivities(context.Context, *DeleteActivitiesRequest) (*GlobalResponse, error)
 	GetActivities(context.Context, *emptypb.Empty) (*ActivitiesResponse, error)
-	GetUserActivities(context.Context, *GetUserActivitiesRequest) (*ActivitiesResponse, error)
+	SetUserPermissions(context.Context, *SetUserPermissionsRequest) (*SetUserPermissionsResponse, error)
+	GetUserPermissions(context.Context, *GetUserActivitiesRequest) (*ActivitiesResponse, error)
 }
 
 // UnimplementedAuthServiceServer should be embedded to have forward compatible implementations.
@@ -127,14 +151,20 @@ func (UnimplementedAuthServiceServer) Login(context.Context, *LoginRequest) (*Lo
 func (UnimplementedAuthServiceServer) Validate(context.Context, *ValidateRequest) (*ValidateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Validate not implemented")
 }
-func (UnimplementedAuthServiceServer) SetUserPermissions(context.Context, *SetUserPermissionsRequest) (*SetUserPermissionsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetUserPermissions not implemented")
+func (UnimplementedAuthServiceServer) CreateActivities(context.Context, *CreateActivitiesRequest) (*GlobalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateActivities not implemented")
+}
+func (UnimplementedAuthServiceServer) DeleteActivities(context.Context, *DeleteActivitiesRequest) (*GlobalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteActivities not implemented")
 }
 func (UnimplementedAuthServiceServer) GetActivities(context.Context, *emptypb.Empty) (*ActivitiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActivities not implemented")
 }
-func (UnimplementedAuthServiceServer) GetUserActivities(context.Context, *GetUserActivitiesRequest) (*ActivitiesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserActivities not implemented")
+func (UnimplementedAuthServiceServer) SetUserPermissions(context.Context, *SetUserPermissionsRequest) (*SetUserPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetUserPermissions not implemented")
+}
+func (UnimplementedAuthServiceServer) GetUserPermissions(context.Context, *GetUserActivitiesRequest) (*ActivitiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserPermissions not implemented")
 }
 
 // UnsafeAuthServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -202,20 +232,38 @@ func _AuthService_Validate_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_SetUserPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetUserPermissionsRequest)
+func _AuthService_CreateActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateActivitiesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).SetUserPermissions(ctx, in)
+		return srv.(AuthServiceServer).CreateActivities(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_SetUserPermissions_FullMethodName,
+		FullMethod: AuthService_CreateActivities_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).SetUserPermissions(ctx, req.(*SetUserPermissionsRequest))
+		return srv.(AuthServiceServer).CreateActivities(ctx, req.(*CreateActivitiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_DeleteActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteActivitiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).DeleteActivities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_DeleteActivities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).DeleteActivities(ctx, req.(*DeleteActivitiesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -238,20 +286,38 @@ func _AuthService_GetActivities_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_GetUserActivities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_SetUserPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetUserPermissionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).SetUserPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_SetUserPermissions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).SetUserPermissions(ctx, req.(*SetUserPermissionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetUserPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserActivitiesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).GetUserActivities(ctx, in)
+		return srv.(AuthServiceServer).GetUserPermissions(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_GetUserActivities_FullMethodName,
+		FullMethod: AuthService_GetUserPermissions_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetUserActivities(ctx, req.(*GetUserActivitiesRequest))
+		return srv.(AuthServiceServer).GetUserPermissions(ctx, req.(*GetUserActivitiesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -276,16 +342,24 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_Validate_Handler,
 		},
 		{
-			MethodName: "SetUserPermissions",
-			Handler:    _AuthService_SetUserPermissions_Handler,
+			MethodName: "CreateActivities",
+			Handler:    _AuthService_CreateActivities_Handler,
+		},
+		{
+			MethodName: "DeleteActivities",
+			Handler:    _AuthService_DeleteActivities_Handler,
 		},
 		{
 			MethodName: "GetActivities",
 			Handler:    _AuthService_GetActivities_Handler,
 		},
 		{
-			MethodName: "GetUserActivities",
-			Handler:    _AuthService_GetUserActivities_Handler,
+			MethodName: "SetUserPermissions",
+			Handler:    _AuthService_SetUserPermissions_Handler,
+		},
+		{
+			MethodName: "GetUserPermissions",
+			Handler:    _AuthService_GetUserPermissions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -10,9 +10,29 @@ service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
 
-  rpc SetUserPermissions(SetUserPermissionsRequest) returns (SetUserPermissionsResponse){}
+  rpc CreateActivities(CreateActivitiesRequest) returns (GlobalResponse) {}
+  rpc DeleteActivities(DeleteActivitiesRequest) returns (GlobalResponse) {}
   rpc GetActivities(google.protobuf.Empty) returns (ActivitiesResponse) {}
-  rpc GetUserActivities(GetUserActivitiesRequest) returns (ActivitiesResponse) {}
+  
+  rpc SetUserPermissions(SetUserPermissionsRequest) returns (SetUserPermissionsResponse){}
+  rpc GetUserPermissions(GetUserActivitiesRequest) returns (ActivitiesResponse) {}
+}
+
+//DeleteActivities
+message DeleteActivitiesRequest {
+  string id =1;
+}
+
+//CreateActivities
+message CreateActivitiesRequest {
+  string id = 1;
+  string parent = 2;
+  string label = 3;
+  string pathUrl = 4;
+}
+
+message GlobalResponse {
+  string message = 1;
 }
 
 //GetUserActivities
@@ -26,8 +46,7 @@ message SetUserPermissionsRequest{
   repeated string activityId = 2;
 }
 message SetUserPermissionsResponse{
-  int64 status = 1;
-  string error = 2;
+  string message = 1;
 }
 
 //GetActivities
@@ -39,8 +58,6 @@ message Activitiy {
 }
 
 message ActivitiesResponse {
-  int64 status = 1;
-  string error = 2;
   repeated Activitiy activity = 3;
 }
 
@@ -52,8 +69,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-  int64 status = 1;
-  string error = 2;
+  string message = 2;
 }
 
 // Login
@@ -64,8 +80,6 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  int64 status = 1;
-  string error = 2;
   string token = 3;
 }
 
@@ -74,8 +88,6 @@ message LoginResponse {
 message ValidateRequest { string token = 1; }
 
 message ValidateResponse {
-  int64 status = 1;
-  string error = 2;
   int64 userId = 3;
   string email = 4;
 }

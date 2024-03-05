@@ -19,27 +19,31 @@ type Server struct {
 func (s *Server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
 
 	usersUc := uc.NewAuthUcHandler(s.ConDb)
-	result := usersUc.Register(context.Background(), req)
+	result, err := usersUc.Register(context.Background(), req)
 
-	return result, nil
+	return result, err
 }
 
 func (s *Server) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 
 	usersUc := uc.NewAuthUcHandler(s.ConDb)
-	result := usersUc.Login(context.Background(), req, s.Jwt)
+	result, err := usersUc.Login(context.Background(), req, s.Jwt)
 
-	return result, nil
+	return result, err
 }
 
 func (s *Server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.ValidateResponse, error) {
 	usersUc := uc.NewAuthUcHandler(s.ConDb)
-	result := usersUc.Validate(context.Background(), req, s.Jwt)
+	result, err := usersUc.Validate(context.Background(), req, s.Jwt)
 
-	return result, nil
+	return result, err
 }
 
-func (s *Server) SetUserPermissions(ctx context.Context, req *pb.SetUserPermissionsRequest) (*pb.SetUserPermissionsResponse, error) {
+func (s *Server) CreateActivities(ctx context.Context, req *pb.CreateActivitiesRequest) (*pb.GlobalResponse, error) {
+	return nil, nil
+}
+
+func (s *Server) DeleteActivities(ctx context.Context, req *pb.DeleteActivitiesRequest) (*pb.GlobalResponse, error) {
 	return nil, nil
 }
 
@@ -47,6 +51,10 @@ func (s *Server) GetActivities(ctx context.Context, req *emptypb.Empty) (*pb.Act
 	return nil, nil
 }
 
-func (s *Server) GetUserActivities(ctx context.Context, req *pb.GetUserActivitiesRequest) (*pb.ActivitiesResponse, error) {
+func (s *Server) SetUserPermissions(ctx context.Context, req *pb.SetUserPermissionsRequest) (*pb.SetUserPermissionsResponse, error) {
+	return nil, nil
+}
+
+func (s *Server) GetUserPermissions(ctx context.Context, req *pb.GetUserActivitiesRequest) (*pb.ActivitiesResponse, error) {
 	return nil, nil
 }
