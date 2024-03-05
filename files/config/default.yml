@@ -1,8 +1,0 @@
-service_port: localhost:9080
-jwt_secret_key: secret_key
-database:
-  username: 
-  password:
-  host: 127.0.0.1
-  port: 3306
-  name: 
